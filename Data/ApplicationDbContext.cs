@@ -13,5 +13,9 @@ namespace MyBlog.Data
             : base(options)
         {
         }
+        public DbSet<BlogCategory> BlogCategory { get; set; }
+        public DbSet<CategoryPost> CategoryPost { get; set; }
+        public DbSet<MyBlog.Models.PostComment> PostComment { get; set; }
+        public DbSet<MyBlog.Models.Tag> Tag { get; set; }
     }
 }
