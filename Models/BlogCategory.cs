@@ -9,11 +9,14 @@ namespace MyBlog.Models
     public class BlogCategory
     {
         public int Id { get; set; }
+
         public string Name { get; set; }
+
         public string Description { get; set; }
         
-        [DataType(DataType.Date)]
         public DateTime Created { get; set; }
+
+        public DateTime? Updated { get; set; }
 
         // as A Blog Category I am likely to have zero or more Category Post instances
         public virtual ICollection<CategoryPost> CategoryPosts { get; set; } =

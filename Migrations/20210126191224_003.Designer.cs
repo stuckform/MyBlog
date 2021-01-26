@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBlog.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210126191224_003")]
+    partial class _003
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,9 +182,6 @@ namespace MyBlog.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
                     b.HasKey("Id");
 
                     b.ToTable("BlogCategory");
@@ -275,14 +274,17 @@ namespace MyBlog.Migrations
                     b.Property<int>("BlogCategoryId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Body")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("CategoryPostId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsReady")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("PostBody")
-                        .HasColumnType("text");
 
                     b.Property<string>("Slug")
                         .HasColumnType("text");
@@ -297,6 +299,8 @@ namespace MyBlog.Migrations
 
                     b.HasIndex("BlogCategoryId");
 
+                    b.HasIndex("CategoryPostId");
+
                     b.ToTable("CategoryPost");
                 });
 
@@ -310,23 +314,20 @@ namespace MyBlog.Migrations
                     b.Property<string>("BlogUserId")
                         .HasColumnType("text");
 
+                    b.Property<string>("Body")
+                        .HasColumnType("text");
+
                     b.Property<int>("CategoryPostId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("CommentBody")
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("ModBody")
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("ModDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ModReason")
                         .HasColumnType("text");
-
-                    b.Property<DateTime?>("Moderated")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp without time zone");
@@ -429,6 +430,10 @@ namespace MyBlog.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyBlog.Models.CategoryPost", null)
+                        .WithMany("CategoryPosts")
+                        .HasForeignKey("CategoryPostId");
+
                     b.Navigation("BlogCategory");
                 });
 
@@ -461,6 +466,8 @@ namespace MyBlog.Migrations
 
             modelBuilder.Entity("MyBlog.Models.CategoryPost", b =>
                 {
+                    b.Navigation("CategoryPosts");
+
                     b.Navigation("PostComments");
                 });
 #pragma warning restore 612, 618
