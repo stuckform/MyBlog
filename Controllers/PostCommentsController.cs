@@ -63,6 +63,7 @@ namespace MyBlog.Controllers
         {
             if (ModelState.IsValid)
             {
+                postComment.Created = DateTime.Now;
                 _context.Add(postComment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -106,6 +107,7 @@ namespace MyBlog.Controllers
             {
                 try
                 {
+                    postComment.Updated = DateTime.Now;
                     _context.Update(postComment);
                     await _context.SaveChangesAsync();
                 }

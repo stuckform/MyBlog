@@ -10,10 +10,15 @@ namespace MyBlog.Models
     {
         public int Id { get; set; }
 
+        [Required]
+        [StringLength(30, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         public string Description { get; set; }
-        
+
+        [DataType(DataType.Date)]
         public DateTime Created { get; set; }
 
         public DateTime? Updated { get; set; }

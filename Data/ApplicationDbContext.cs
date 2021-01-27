@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace MyBlog.Data
 {
@@ -15,7 +13,7 @@ namespace MyBlog.Data
         }
         public DbSet<BlogCategory> BlogCategory { get; set; }
         public DbSet<CategoryPost> CategoryPost { get; set; }
-        public DbSet<MyBlog.Models.PostComment> PostComment { get; set; }
-        public DbSet<MyBlog.Models.Tag> Tag { get; set; }
+        public DbSet<PostComment> PostComment { get; set; }
+        public DbSet<Tag> Tag { get; set; }
     }
 }

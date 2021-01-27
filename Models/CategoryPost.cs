@@ -13,14 +13,22 @@ namespace MyBlog.Models
 
         public int BlogCategoryId { get; set; }
 
+        [Required]
+        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
         public string Title { get; set; }
-
+        
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         public string Abstract { get; set; }
 
+        [Required]
+        [StringLength(1500, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         public string PostBody { get; set; }
 
+        [Display(Name = "Publish")]
         public bool IsReady { get; set; }
-
+        
+        [DataType(DataType.Date)]
         public DateTime Created { get; set; }
        
         public DateTime? Updated { get; set; } 

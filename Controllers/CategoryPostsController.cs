@@ -61,6 +61,7 @@ namespace MyBlog.Controllers
         {
             if (ModelState.IsValid)
             {
+                categoryPost.Created = DateTime.Now;
                 _context.Add(categoryPost);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -102,6 +103,7 @@ namespace MyBlog.Controllers
             {
                 try
                 {
+                    categoryPost.Updated = DateTime.Now;
                     _context.Update(categoryPost);
                     await _context.SaveChangesAsync();
                 }
