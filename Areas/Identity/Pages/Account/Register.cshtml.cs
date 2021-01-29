@@ -48,7 +48,7 @@ namespace MyBlog.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "E-mail")]
             public string Email { get; set; }
 
             [Required]
@@ -71,21 +71,25 @@ namespace MyBlog.Areas.Identity.Pages.Account
             [StringLength(70, ErrorMessage = "the {0} must be at least {2}) and at max {1} characters long.", MinimumLength = 1)]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
-        }
 
+            [StringLength(50, ErrorMessage = "the {0} must be at least {2}) and at max {1} characters long.", MinimumLength = 1)]
+            [Display(Name = "Display Name")]
+            public string DisplayName { get; set; }
+        }
+        //HTTP GET
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
-
+        //HTTP Post
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BlogUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName };
+                var user = new BlogUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, DisplayName = Input.DisplayName};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

@@ -46,10 +46,10 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Abstract)
+                @Html.Raw(item.Abstract)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PostBody)
+                @Html.Raw(item.PostBody)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsReady)
@@ -64,12 +64,12 @@
                 @Html.DisplayFor(modelItem => item.Slug)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BlogCategory.Id)
+                @Html.DisplayFor(modelItem => item.BlogCategory.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
             </td>
         </tr>
 }

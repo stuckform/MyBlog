@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,8 @@ namespace MyBlog.Controllers
             return View(await _context.BlogCategory.ToListAsync());
         }
 
+  
+        
         // GET: BlogCategories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,6 +47,8 @@ namespace MyBlog.Controllers
         }
 
         // GET: BlogCategories/Create
+        // The Admin is only able to create categories
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -54,7 +59,7 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,Updated")] BlogCategory blogCategory)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] BlogCategory blogCategory)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +92,7 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,Updated")] BlogCategory blogCategory)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created")] BlogCategory blogCategory)
         {
             if (id != blogCategory.Id)
             {

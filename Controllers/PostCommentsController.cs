@@ -59,7 +59,7 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryPostId,BlogUserId,CommentBody,Created,Updated,Moderated,ModReason,ModBody")] PostComment postComment)
+        public async Task<IActionResult> Create([Bind("Id,CategoryPostId,BlogUserId,CommentBody,Moderated,ModReason,ModBody")] PostComment postComment)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryPostId,BlogUserId,CommentBody,Created,Updated,Moderated,ModReason,ModBody")] PostComment postComment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryPostId,BlogUserId,CommentBody,Created,Moderated,ModReason,ModBody")] PostComment postComment)
         {
             if (id != postComment.Id)
             {

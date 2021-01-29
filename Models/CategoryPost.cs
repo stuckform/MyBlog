@@ -18,11 +18,10 @@ namespace MyBlog.Models
         public string Title { get; set; }
         
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         public string Abstract { get; set; }
 
         [Required]
-        [StringLength(1500, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Display(Name = "Body")]
         public string PostBody { get; set; }
 
         [Display(Name = "Publish")]
@@ -35,7 +34,7 @@ namespace MyBlog.Models
       
         public string Slug { get; set; }
 
-
+        [Display(Name = "Category")]
         public virtual BlogCategory BlogCategory { get; set; }
 
         public virtual ICollection<PostComment> PostComments { get; set; } =

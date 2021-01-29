@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,20 @@ namespace MyBlog.Controllers
             var applicationDbContext = _context.CategoryPost.Include(c => c.BlogCategory);
             return View(await applicationDbContext.ToListAsync());
         }
+        //Just show the blog posts for a given category.
+        public IActionResult CategoryIndex(int? id)
+        { 
+            if(id == null)
+            {
+                return NotFound();
+            }
 
+            //Write a Linq statement that uses the Id to get all of the Blog Posts with the Category Id Fk = id
+            var posts = _context.CategoryPost.Where(p => p.BlogCategoryId == id).ToList();
+
+            //Once I have my Blog posts I want to display them in the Index View
+            return View("Index", posts);
+        }
         // GET: CategoryPosts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,9 +60,10 @@ namespace MyBlog.Controllers
         }
 
         // GET: CategoryPosts/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
-            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Id");
+            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name");
             return View();
         }
 
@@ -57,16 +72,16 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady,Created,Updated,Slug")] CategoryPost categoryPost)
+        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady")] CategoryPost categoryPost)
         {
             if (ModelState.IsValid)
             {
                 categoryPost.Created = DateTime.Now;
                 _context.Add(categoryPost);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));            
             }
-            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Id", categoryPost.BlogCategoryId);
+            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name", categoryPost.BlogCategoryId);
             return View(categoryPost);
         }
 
@@ -83,7 +98,7 @@ namespace MyBlog.Controllers
             {
                 return NotFound();
             }
-            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Id", categoryPost.BlogCategoryId);
+            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name", categoryPost.BlogCategoryId);
             return View(categoryPost);
         }
 
@@ -92,7 +107,7 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady,Created,Updated,Slug")] CategoryPost categoryPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady,Created")] CategoryPost categoryPost)
         {
             if (id != categoryPost.Id)
             {
@@ -120,7 +135,7 @@ namespace MyBlog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Id", categoryPost.BlogCategoryId);
+            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name", categoryPost.BlogCategoryId);
             return View(categoryPost);
         }
 

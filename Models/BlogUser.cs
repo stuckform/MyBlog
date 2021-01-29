@@ -18,6 +18,10 @@ namespace MyBlog.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [StringLength(50, ErrorMessage = "the {0} must be at least {2}) and at max {1} characters long.", MinimumLength = 1)]
+        [Display(Name = "Display Name")]
+        public string DisplayName { get; set; }
+
         //how to get the user's full name
         [NotMapped]//-do not map it to the table
         public string FullName

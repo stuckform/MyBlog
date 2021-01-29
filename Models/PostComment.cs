@@ -25,8 +25,10 @@ namespace MyBlog.Models
         
         public DateTime? Moderated { get; set; }
         
+        [Display(Name = "Reason")]
         public string ModReason { get; set; }
 
+        [Display(Name = "Body")]
         public string ModBody { get; set; }
 
 
