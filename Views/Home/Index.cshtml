@@ -6,3 +6,20 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<hr />
+
+@* How will I ask if the user is logged in at all? *@
+@if(User.Identity.IsAuthenticated)
+{
+    <h1>Endter your comment below</h1>
+    <br />
+    <form>
+        <textarea placeholder="Comment"> </textarea>
+        <button type="submit" claa="btn btn-dark">Post it!</button>
+    </form>
+}
+else
+{
+    <h1>Login to enter a comment</h1>
+}

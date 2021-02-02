@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MyBlog.Services;
+using MyBlog.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace MyBlog
            //ManageData - the name of a method inside that class that does some unit of work
            // All ManageData is going to do is call a few other methods (wrapper method)
             
-           await DataService.ManageDataAsync(host);
+           await DataManager.ManageDataAsync(host);
 
            host.Run();
         }    

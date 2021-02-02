@@ -8,16 +8,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
 using MyBlog.Models;
+using MyBlog.Services;
 
 namespace MyBlog.Controllers
 {
     public class CategoryPostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private ISlugService _slugService;
+        
 
-        public CategoryPostsController(ApplicationDbContext context)
+        public CategoryPostsController(ApplicationDbContext context, ISlugService slugService)
         {
             _context = context;
+            _slugService = slugService;
         }
 
         // GET: CategoryPosts
@@ -35,29 +39,53 @@ namespace MyBlog.Controllers
             }
 
             //Write a Linq statement that uses the Id to get all of the Blog Posts with the Category Id Fk = id
-            var posts = _context.CategoryPost.Where(p => p.BlogCategoryId == id).ToList();
+            var posts = _context.CategoryPost.Where(cp => cp.BlogCategoryId == id).Include(c => c.BlogCategory).ToList();
 
             //Once I have my Blog posts I want to display them in the Index View
             return View("Index", posts);
         }
-        // GET: CategoryPosts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: CategoryPosts/Details/
+
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
+
+
             var categoryPost = await _context.CategoryPost
                 .Include(c => c.BlogCategory)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(c => c.PostComments)
+                .ThenInclude(p => p.BlogUser)
+                .FirstOrDefaultAsync(mbox => mbox.Slug == slug);
             if (categoryPost == null)
             {
                 return NotFound();
             }
-
             return View(categoryPost);
         }
+
+        //Here is the old code
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var categoryPost = await _context.CategoryPost
+        //        .Include(c => c.BlogCategory)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (categoryPost == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(categoryPost);
+        //}
+
 
         // GET: CategoryPosts/Create
         [Authorize(Roles = "Administrator")]
@@ -77,6 +105,19 @@ namespace MyBlog.Controllers
             if (ModelState.IsValid)
             {
                 categoryPost.Created = DateTime.Now;
+
+                var slug = _slugService.URLFriendly(categoryPost.Title);
+                if(_slugService.Isunique(_context, slug))
+                {
+                    categoryPost.Slug = slug;
+                }
+                else
+                {
+                    ModelState.AddModelError("Title", "This Title has a duplicate slug!");
+                    ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name");
+                    return View(categoryPost);
+                     
+                }
                 _context.Add(categoryPost);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));            
@@ -107,7 +148,7 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady,Created")] CategoryPost categoryPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady,Created, Slug")] CategoryPost categoryPost)
         {
             if (id != categoryPost.Id)
             {
@@ -118,6 +159,22 @@ namespace MyBlog.Controllers
             {
                 try
                 {
+                    var slug = _slugService.URLFriendly(categoryPost.Title);
+                    if (slug != categoryPost.Slug)
+                    {
+                        if (_slugService.Isunique(_context, slug))
+                        {
+                            categoryPost.Slug = slug;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Title", "This Title has a duplicate slug!");
+                            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name");
+                            return View(categoryPost);
+
+                        }
+
+                    }
                     categoryPost.Updated = DateTime.Now;
                     _context.Update(categoryPost);
                     await _context.SaveChangesAsync();

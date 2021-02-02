@@ -8,13 +8,13 @@ using Microsoft.Extensions.Hosting;
 using MyBlog.Data;
 using MyBlog.Models;
 
-namespace MyBlog.Services
+namespace MyBlog.Utilities
 {
     //In order to use an instance of this class (as it's defined right now..)
     //I would need the following code somewhere in my application
-    // Var myDataService = new DataService();
 
-    public static class DataService
+
+    public static class DataManager
     {
       public static async Task ManageDataAsync(IHost host)
         {

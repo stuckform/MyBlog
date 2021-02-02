@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyBlog.Data;
 using MyBlog.Models;
+using MyBlog.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +44,13 @@ namespace MyBlog
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //This is how I register a custom class as a service
+            services.AddTransient<ISlugService, BasicSlugService>();
+
+            //Services needed to send emails
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddScoped<IEmailSender, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +77,11 @@ namespace MyBlog
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                 name: "slug",
+                 pattern: "Posts/Deatles/{slug}",
+                 defaults: new { controller = "CategoryPosts", action = "Details" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

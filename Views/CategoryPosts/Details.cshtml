@@ -10,52 +10,52 @@
     <h4>CategoryPost</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Abstract)
         </dt>
         <dd class="col-sm-10">
             @Html.Raw(Model.Abstract)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PostBody)
         </dt>
         <dd class="col-sm-10">
             @Html.Raw(Model.PostBody)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.IsReady)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IsReady)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Created)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Created)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Updated)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Updated)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Slug)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Slug)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BlogCategory)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BlogCategory.Name)
         </dd>
     </dl>
@@ -64,3 +64,42 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<!-- Comment section starts here-->
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class=" " col-8 offset-2">
+            <form asp-controller="PostComments" asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="CategoryPostId" value="@Model.Id" />
+
+                @*<div class="form-group">
+                        <label asp-for="BlogUserId" class="control-label"></label>
+                        <select asp-for="BlogUserId" class="form-control" asp-items="ViewBag.BlogUserId"></select>
+                    </div>*@
+                <div class="form-group">
+                    <label class="control-label">Comment</label>
+                    <textarea name="CommentBody" class="form-control"></textarea>
+
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Post it!" class="btn btn-primary" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+}
+else
+{
+    <h2>Login or Register to post a Comment</h2>
+}
+
+    @*Where my comments will be posted*@
+@foreach (var comment in Model.PostComments)
+{
+    @Html.Raw(comment.CommentBody)
+    <p class="text-sm-center">@comment.BlogUser.UserName</p>
+}
