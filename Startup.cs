@@ -48,9 +48,28 @@ namespace MyBlog
             //This is how I register a custom class as a service
             services.AddTransient<ISlugService, BasicSlugService>();
 
+            //Register our new BasicImageService
+            services.AddTransient<IImageService, BasicImageService>();
+
             //Services needed to send emails
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddScoped<IEmailSender, EmailService>();
+
+            //Service for 3rd party authentication
+            services.AddAuthentication()
+            .AddGitHub(options =>
+            {
+                options.ClientId = "d40086f78e6512dbc5a7";
+                options.ClientSecret = "c5caf4d0161b79a1c1d279f445e355d3cf6a214f";
+                options.AccessDeniedPath = "/AccessDeniedPathInfo";
+            })
+      
+            .AddGoogle(options =>
+            {
+                options.ClientId = "691298918451-98b50du4gro5omo1v1dfq6iumf7ag8dq.apps.googleusercontent.com";
+                options.ClientSecret = "uM33AIuveMU6XpzE68pe1Q7k";
+                options.AccessDeniedPath = "/AccessDeniedPathInfo";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

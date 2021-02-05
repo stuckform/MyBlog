@@ -284,8 +284,14 @@ namespace MyBlog.Migrations
                     b.Property<int>("BlogCategoryId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("bytea");
 
                     b.Property<bool>("IsReady")
                         .HasColumnType("boolean");

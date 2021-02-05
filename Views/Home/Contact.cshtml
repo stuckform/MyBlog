@@ -1,7 +1,7 @@
 ﻿@model MyBlog.Models.ContactForm
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Contact";
 }
 
 <h1>View</h1>
@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Subject" class="control-label"></label>
-                <input asp-for="Subject" class="form-control" />
+                <textarea asp-for="Subject" placeholder="What would you like to tell me?"></textarea>
                 <span asp-validation-for="Subject" class="text-danger"></span>
             </div>
             <div class="form-group">

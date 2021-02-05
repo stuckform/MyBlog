@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Models
 {
-    [Keyless]
+  
     public class ContactForm
     {
 

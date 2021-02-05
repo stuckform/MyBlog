@@ -34,7 +34,7 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryPostId,CommentBody")] PostComment postComment)
+        public async Task<IActionResult> Create([Bind("CategoryPostId,CommentBody")] PostComment postComment, string slug)
         {
             if (ModelState.IsValid)
             {
@@ -43,7 +43,6 @@ namespace MyBlog.Controllers
                 _context.Add(postComment);
                 await _context.SaveChangesAsync();
                 //need a slug for navigation 
-                var slug = _context.CategoryPost.Find(postComment.CategoryPostId).Slug;
                 return RedirectToAction("Details", "CategoryPosts", new{slug });
             }
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", postComment.BlogUserId);
@@ -87,7 +86,10 @@ namespace MyBlog.Controllers
                 {
                     postComment.Updated = DateTime.Now;
                     _context.Update(postComment);
+                    postComment.BlogUserId = _userManager.GetUserId(User);
                     await _context.SaveChangesAsync();
+                    var slug = _context.CategoryPost.Find(postComment.CategoryPostId).Slug;
+                    return RedirectToAction("Details", "CategoryPosts", new { slug });
                 }
                 catch (DbUpdateConcurrencyException)
                 {

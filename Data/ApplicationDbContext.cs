@@ -15,6 +15,5 @@ namespace MyBlog.Data
         public DbSet<CategoryPost> CategoryPost { get; set; }
         public DbSet<PostComment> PostComment { get; set; }
         public DbSet<Tag> Tag { get; set; }
-        public DbSet<MyBlog.Models.ContactForm> ContactForm { get; set; }
     }
 }

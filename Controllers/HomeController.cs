@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyBlog.Data;
 using MyBlog.Models;
 using System;
 using System.Collections.Generic;
@@ -15,21 +17,25 @@ namespace MyBlog.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
         private readonly MailSettings _mailSettings;
 
         public HomeController(
             ILogger<HomeController> logger,
             IEmailSender emailSender,
-            IOptions<MailSettings> mailsettings)
+            IOptions<MailSettings> mailsettings,
+            ApplicationDbContext context)
         {
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
             _mailSettings = mailsettings.Value;
         }
 
-        public IActionResult Index()
+        public  async Task<IActionResult> Index()
         {
-            return View();
+            var categories = await _context.BlogCategory.ToListAsync();
+            return View(categories);
         }
 
         public IActionResult Contact()

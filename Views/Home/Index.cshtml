@@ -1,25 +1,111 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<BlogCategory>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-<hr />
-
-@* How will I ask if the user is logged in at all? *@
-@if(User.Identity.IsAuthenticated)
-{
-    <h1>Endter your comment below</h1>
-    <br />
-    <form>
-        <textarea placeholder="Comment"> </textarea>
-        <button type="submit" claa="btn btn-dark">Post it!</button>
-    </form>
-}
-else
-{
-    <h1>Login to enter a comment</h1>
-}
+<!DOCTYPE html>
+<html>
+<body>
+    <!-- Hero Section-->
+    <section style="background: url(img/featured-pic-1.jpeg); background-size: cover; background-position: center center" class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 mt-6">
+                    <h1>Welcome to Code Road</h1><a href="" class="hero-link">Check out my Portfolio</a>
+                </div>
+            </div><a href=".intro" class="continue link-scroll"><i class="fa fa-long-arrow-down"></i> Scroll Down</a>
+        </div>
+    </section>
+    <!-- Intro Section-->
+    <section class="intro">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2 class="h3">Some great intro here</h2>
+                    <p class="text-big">Place a nice <strong>introduction</strong> here <strong>to catch reader's attention</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderi.</p>
+                </div>
+            </div>
+        </div>
+    
+    </section>
+    <section class="featured-posts no-padding-top">
+        <div class="container">
+            <!-- Post-->
+        @foreach (var category in Model)
+        {
+            <div class="row d-flex align-items-stretch">
+                <div class="text col-lg-7">
+                    <div class="text-inner d-flex align-items-center">
+                        <div class="content">
+                            <header class="post-header">
+                              <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@category.Id">
+                                <h2 class="h4">@category.Name</h2>
+                              </a>
+                            </header>
+                            <p>@Html.Raw(category.Description)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="image col-lg-5" style="min-height:346px;">
+                <img src="img/featured-pic-1.jpeg" alt="...">
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+    <!-- Divider Section-->
+    <section style="background: url(img/divider-bg.jpg); background-size: cover; background-position: center bottom" class="divider">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2><a href="#" class="hero-link">View More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Latest Posts -->
+    <section class="latest-posts">
+        <div class="container">
+            <header>
+                <h2>Latest from the blog</h2>
+                <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+            </header>
+            <div class="row">
+                <div class="post col-md-4">
+                    <div class="post-thumbnail"><a href="post.html"><img src="img/blog-1.jpg" alt="..." class="img-fluid"></a></div>
+                    <div class="post-details">
+                        <div class="post-meta d-flex justify-content-between">
+                            <div class="date">20 May | 2016</div>
+                            <div class="category"><a href="#">Business</a></div>
+                        </div><a href="post.html">
+                            <h3 class="h4">Ways to remember your important ideas</h3>
+                        </a>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                    </div>
+                </div>
+                <div class="post col-md-4">
+                    <div class="post-thumbnail"><a href="post.html"><img src="img/blog-2.jpg" alt="..." class="img-fluid"></a></div>
+                    <div class="post-details">
+                        <div class="post-meta d-flex justify-content-between">
+                            <div class="date">20 May | 2016</div>
+                            <div class="category"><a href="#">Technology</a></div>
+                        </div><a href="post.html">
+                            <h3 class="h4">Diversity in Engineering: Effect on Questions</h3>
+                        </a>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                    </div>
+                </div>
+                <div class="post col-md-4">
+                    <div class="post-thumbnail"><a href="post.html"><img src="img/blog-3.jpg" alt="..." class="img-fluid"></a></div>
+                    <div class="post-details">
+                        <div class="post-meta d-flex justify-content-between">
+                            <div class="date">20 May | 2016</div>
+                            <div class="category"><a href="#">Financial</a></div>
+                        </div><a href="post.html">
+                            <h3 class="h4">Alberto Savoia Can Teach You About Interior</h3>
+                        </a>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ </body>
+</html>

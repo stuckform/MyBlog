@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,13 +17,18 @@ namespace MyBlog.Controllers
     public class CategoryPostsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private ISlugService _slugService;
-        
+        private readonly ISlugService _slugService;
+        private readonly IImageService _imageService;
 
-        public CategoryPostsController(ApplicationDbContext context, ISlugService slugService)
+
+        public CategoryPostsController(
+            ApplicationDbContext context,
+            ISlugService slugService,
+            IImageService imageService)
         {
             _context = context;
             _slugService = slugService;
+            _imageService = imageService;
         }
 
         // GET: CategoryPosts
@@ -100,12 +107,16 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady")] CategoryPost categoryPost)
+        public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady")] CategoryPost categoryPost, IFormFile formFile)
         {
             if (ModelState.IsValid)
             {
                 categoryPost.Created = DateTime.Now;
 
+                categoryPost.ContentType = _imageService.RecordContentType(formFile);
+                categoryPost.ImageData = await _imageService.EncodeFileAsync(formFile);
+                
+                //using slugs
                 var slug = _slugService.URLFriendly(categoryPost.Title);
                 if(_slugService.Isunique(_context, slug))
                 {
@@ -125,7 +136,7 @@ namespace MyBlog.Controllers
             ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name", categoryPost.BlogCategoryId);
             return View(categoryPost);
         }
-
+        [Authorize(Roles = "Administrator")]
         // GET: CategoryPosts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -146,6 +157,7 @@ namespace MyBlog.Controllers
         // POST: CategoryPosts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady,Created, Slug")] CategoryPost categoryPost)
@@ -195,7 +207,7 @@ namespace MyBlog.Controllers
             ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name", categoryPost.BlogCategoryId);
             return View(categoryPost);
         }
-
+        [Authorize(Roles = "Administrator")]
         // GET: CategoryPosts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -214,7 +226,7 @@ namespace MyBlog.Controllers
 
             return View(categoryPost);
         }
-
+        [Authorize(Roles = "Administrator")]
         // POST: CategoryPosts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

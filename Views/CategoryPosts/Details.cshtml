@@ -1,5 +1,9 @@
-﻿@model MyBlog.Models.CategoryPost
+﻿@using MyBlog.Services
+@using MyBlog.Models
 
+@inject IImageService imageService
+@model CategoryPost
+ 
 @{
     ViewData["Title"] = "Details";
 }
@@ -9,6 +13,9 @@
 <div>
     <h4>CategoryPost</h4>
     <hr />
+
+    <img src="@imageService.DecodeFile(Model.ImageData, Model.ContentType)" class="img-fluid"/>
+
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -67,12 +74,13 @@
 
 <!-- Comment section starts here-->
 @if (User.Identity.IsAuthenticated)
-{
+ {
     <div class="row">
-        <div class=" " col-8 offset-2">
+        <div class="col-8 offset-2">
             <form asp-controller="PostComments" asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="CategoryPostId" value="@Model.Id" />
+                <input type="hidden" asp-for="Slug" />
 
                 @*<div class="form-group">
                         <label asp-for="BlogUserId" class="control-label"></label>
@@ -85,21 +93,46 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="Post it!" class="btn btn-primary" />
+                    <input type="submit" value="Post" class="btn btn-primary" />
                 </div>
+
             </form>
 
         </div>
     </div>
-}
+ }
 else
-{
-    <h2>Login or Register to post a Comment</h2>
-}
+    {
+        <h2>Login or Register to post a Comment</h2>
+        <hr />
+    }
 
-    @*Where my comments will be posted*@
-@foreach (var comment in Model.PostComments)
+@*Where my comments will be posted*@
+
+<div class="row">
+    <h2>Comment Section:</h2>
+</div>
+@foreach (var comment in Model.PostComments.OrderByDescending(c => c.Created))
 {
-    @Html.Raw(comment.CommentBody)
-    <p class="text-sm-center">@comment.BlogUser.UserName</p>
+<div class="row mt-2">
+    <div class="col">
+        @comment.BlogUser.UserName
+    </div>
+    <div class="col align-content-start">
+        @comment.Created.ToString("MM,dd,yyyy")
+
+    </div>
+
+</div>
+<div class="row mt-2">
+    <div class="col">
+        @comment.CommentBody
+        <hr />
+    </div>
+    <div class="col">
+        <a asp-controller="PostComments" asp-action="Edit">Edit</a>
+    </div>
+
+</div>
+
 }

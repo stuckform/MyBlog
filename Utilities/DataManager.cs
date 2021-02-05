@@ -59,8 +59,8 @@ namespace MyBlog.Utilities
             //Step 1: Create yourself as a user
             var adminUser = new BlogUser()
             {
-                Email = "Matt.kaizen@gmail.com",
-                UserName = "Matt.kaizen@gmail.com",
+                Email = "Coppinger.dev@gmail.com",
+                UserName = "Coppinger.dev@gmail.com",
                 FirstName = "Matthew",
                 LastName = "Coppinger",
                 EmailConfirmed = true
@@ -83,8 +83,8 @@ namespace MyBlog.Utilities
 
         private static async Task AssignRolesAsync(UserManager<BlogUser> userManagerSvc)
         {
-            //Step 1: Somehow get a reference to the Matt.kaizen user
-            var adminUser = await userManagerSvc.FindByEmailAsync("Matt.kaizen@gmail.com");
+            //Step 1: Somehow get a reference to the Coppinger.dev user
+            var adminUser = await userManagerSvc.FindByEmailAsync("Coppinger.dev@gmail.com");
 
             //Step 2: Assign the adminUser to the Administrator role
             await userManagerSvc.AddToRoleAsync(adminUser, "Administrator");

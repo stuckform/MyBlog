@@ -1,4 +1,9 @@
-﻿@model IEnumerable<MyBlog.Models.CategoryPost>
+﻿@model IEnumerable<CategoryPost>
+@using MyBlog.Services
+@using MyBlog.Models
+
+@inject IImageService imageService
+
 
 @{
     ViewData["Title"] = "Index";
@@ -12,6 +17,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -42,6 +50,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" class="img-fluid" />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
