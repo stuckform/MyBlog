@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
 using MyBlog.Models;
+using MyBlog.Services;
 
 namespace MyBlog.Controllers
 {
     public class BlogCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public BlogCategoriesController(ApplicationDbContext context)
+        public BlogCategoriesController(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         // GET: BlogCategories
@@ -59,11 +63,13 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] BlogCategory blogCategory)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] BlogCategory blogCategory, IFormFile formFile)
         {
             if (ModelState.IsValid)
             {
                 blogCategory.Created = DateTime.Now;
+                blogCategory.ContentType = _imageService.RecordContentType(formFile);
+                blogCategory.ImageData = await _imageService.EncodeFileAsync(formFile);
                 _context.Add(blogCategory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -92,7 +98,7 @@ namespace MyBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created")] BlogCategory blogCategory)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created")] BlogCategory blogCategory, IFormFile formFile)
         {
             if (id != blogCategory.Id)
             {
@@ -105,6 +111,8 @@ namespace MyBlog.Controllers
                 {
 
                     blogCategory.Updated = DateTime.Now;
+                    blogCategory.ContentType = _imageService.RecordContentType(formFile);
+                    blogCategory.ImageData = await _imageService.EncodeFileAsync(formFile);
                     _context.Update(blogCategory);
                     await _context.SaveChangesAsync();
                 }

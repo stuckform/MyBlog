@@ -5,7 +5,7 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        //var person = await UserManager.FindByNameAsync(User.Identity.Name); //person.DisplayName
+        var person = await UserManager.FindByNameAsync(User.Identity.Name); //person.DisplayName
         @*@person.DisplayName*@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @person.UserName!</a>

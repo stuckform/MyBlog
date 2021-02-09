@@ -20,7 +20,7 @@ namespace MyBlog.Controllers
         private readonly ISlugService _slugService;
         private readonly IImageService _imageService;
 
-
+        
         public CategoryPostsController(
             ApplicationDbContext context,
             ISlugService slugService,
@@ -32,8 +32,18 @@ namespace MyBlog.Controllers
         }
 
         // GET: CategoryPosts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
+            ViewData["SearchString"] = searchString;
+//I want to look at the incoming pageNumber variable and either use it or force it to be 1 and then use 1
+            pageNumber ??= 1;
+
+            //Define an arbitrary page size
+            var pageSize = 3;
+
+            //Define a sentence telling the User what page their on
+            //ViewData["Page"] = $"You are viewing page [pageNumber} of {}"
+
             var applicationDbContext = _context.CategoryPost.Include(c => c.BlogCategory);
             return View(await applicationDbContext.ToListAsync());
         }

@@ -1,5 +1,12 @@
 ﻿@model IEnumerable<BlogCategory>
+@using MyBlog.Services
+@using MyBlog.Models
 
+@inject IImageService imageService
+
+@{
+    ViewData["Title"] = "Index";
+}
 <!DOCTYPE html>
 <html>
 <body>
@@ -23,30 +30,33 @@
                 </div>
             </div>
         </div>
-    
+
     </section>
     <section class="featured-posts no-padding-top">
         <div class="container">
-            <!-- Post-->
-        @foreach (var category in Model)
-        {
-            <div class="row d-flex align-items-stretch">
-                <div class="text col-lg-7">
-                    <div class="text-inner d-flex align-items-center">
-                        <div class="content">
-                            <header class="post-header">
-                              <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@category.Id">
-                                <h2 class="h4">@category.Name</h2>
-                              </a>
-                            </header>
-                            <p>@Html.Raw(category.Description)</p>
+            <!-- Categories-->
+            @foreach (var category in Model)
+            {
+                <div class="row d-flex align-items-stretch">
+                    <div class="text col-lg-7">
+                        <div class="text-inner d-flex align-items-center">
+                            <div class="content">
+                                <header class="post-header">
+                                    <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@category.Id">
+                                        <h2 class="h4">@category.Name</h2>
+                                    </a>
+                                </header>
+                                <p>@Html.Raw(category.Description)</p>
+                                <div class="title">
+                                    <span>@category.Created.ToString("MMM dd, yyyy")</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="image col-lg-5" style="min-height:346px;">
+                        <img src="@imageService.DecodeFile(category.ImageData, category.ContentType)" alt="...">
+                    </div>
                 </div>
-                <div class="image col-lg-5" style="min-height:346px;">
-                <img src="img/featured-pic-1.jpeg" alt="...">
-                </div>
-            </div>
             }
         </div>
     </section>
@@ -107,5 +117,5 @@
             </div>
         </div>
     </section>
- </body>
+</body>
 </html>

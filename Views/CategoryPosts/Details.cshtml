@@ -9,8 +9,211 @@
 }
 
 <h1>Details</h1>
+<html>
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Latest Posts -->
+            <main class="post blog-post col-lg-8">
+                <div class="container">
+                    <div class="post-single">
+                        <div class="post-thumbnail">
+                        <img src="@imageService.DecodeFile(Model.ImageData, Model.ContentType)" alt="..." class="img-fluid">
+                        </div>
+                        <div class="post-details">
+                            <div class="post-meta d-flex justify-content-between">
+                                @*category header *@
+                                <div class="category">
+                                    <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@Model.Id">@Html.DisplayFor(model => model.BlogCategory.Name)</a>
+                                </div>
+                            </div>
+                            <h1> @Html.DisplayNameFor(model => model.Title)</h1>
+                            <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+                                <a href="#" class="author d-flex align-items-center flex-wrap">
+                                    <div class="avatar"><img src="~/Img/mecircle.png" alt="..." class="img-fluid"></div>
+                                    <div class="title"><span>Matthew Coppinger</span></div>
+                                </a>
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="date">
+                                        <i class="icon-clock"></i> @Html.DisplayFor(model => model.Created) 
+                                    </div>
+                                    <div class="date">
+                                    <i class="fa fa-level-up"></i> @Html.DisplayFor(model => model.Updated)
+                                    </div>
 
-<div>
+                                </div>
+                            </div>
+                            <div class="post-body">
+                                <p class="lead"> @Html.Raw(Model.Abstract)</p>
+                                <p>@Html.Raw(Model.PostBody)</p>
+                            </div>
+                            @* under post body tags *@
+                            <div class="post-tags"><a href="#" class="tag">#Business</a><a href="#" class="tag">#Tricks</a><a href="#" class="tag">#Financial</a><a href="#" class="tag">#Economy</a></div>
+                            <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+                                <a href="#" class="prev-post text-left d-flex align-items-center">
+                                    <div class="icon prev"><i class="fa fa-angle-left"></i></div>
+                                    <div class="text">
+                                        <strong class="text-primary">Previous Post </strong>
+                                        <h6>I Bought a Wedding Dress.</h6>
+                                    </div>
+                                </a><a href="#" class="next-post text-right d-flex align-items-center justify-content-end">
+                                    <div class="text">
+                                        <strong class="text-primary">Next Post </strong>
+                                        <h6>I Bought a Wedding Dress.</h6>
+                                    </div>
+                                    <div class="icon next"><i class="fa fa-angle-right">   </i></div>
+                                </a>
+                            </div>
+                            @* comment sections *@
+                        <div class="post-comments">
+                            <header>
+                                <h3 class="h6">Post Comments<span class="no-of-comments">(3)</span></h3>
+                            </header>
+                            @foreach (var comment in Model.PostComments.OrderByDescending(c => c.Created))
+                            {
+                                <div class="comment">
+                                    <div class="comment-header d-flex justify-content-between">
+                                        <div class="user d-flex align-items-center">
+                                            <div class="image">
+                                                <img src="img/user.svg" alt="..." class="img-fluid rounded-circle">
+                                            </div>
+                                            <div class="title">
+                                                <strong>@comment.BlogUser.UserName</strong><span class="date">@comment.Created.ToString("MM,dd,yyyy")</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-body">
+                                        <p> @comment.CommentBody</p>
+                                    </div>
+                                    <hr />
+                                </div>
+                            }
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="add-comment">
+                                    <header>
+                                        <h3 class="h6">Leave a reply</h3>
+                                    </header>
+                                    <form action="#" class="commenting-form">
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <input type="text" name="username" id="username" placeholder="Name" class="form-control">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <input type="email" name="username" id="useremail" placeholder="Email Address (will not be published)" class="form-control">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <textarea name="usercomment" id="usercomment" placeholder="Type your comment" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <button type="submit" class="btn btn-secondary">Submit Comment</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <h2>Login or Register to post a Comment</h2>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <aside class="col-lg-4">
+                <!-- Widget [Search Bar Widget]-->
+                <div class="widget search">
+                    <header>
+                        <h3 class="h6">Search the blog</h3>
+                    </header>
+                    <form action="#" class="search-form">
+                        <div class="form-group">
+                            <input type="search" placeholder="What are you looking for?">
+                            <button type="submit" class="submit"><i class="icon-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Widget [Latest Posts Widget]-->
+                <div class="widget latest-posts">
+                    <header>
+                        <h3 class="h6">Latest Posts</h3>
+                    </header>
+                    <div class="blog-posts">
+                        <a href="#">
+                            <div class="item d-flex align-items-center">
+                                <div class="image"><img src="img/small-thumbnail-1.jpg" alt="..." class="img-fluid"></div>
+                                <div class="title">
+                                    <strong>Alberto Savoia Can Teach You About</strong>
+                                    <div class="d-flex align-items-center">
+                                        <div class="views"><i class="icon-eye"></i> 500</div>
+                                        <div class="comments"><i class="icon-comment"></i>12</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a><a href="#">
+                            <div class="item d-flex align-items-center">
+                                <div class="image"><img src="img/small-thumbnail-2.jpg" alt="..." class="img-fluid"></div>
+                                <div class="title">
+                                    <strong>Alberto Savoia Can Teach You About</strong>
+                                    <div class="d-flex align-items-center">
+                                        <div class="views"><i class="icon-eye"></i> 500</div>
+                                        <div class="comments"><i class="icon-comment"></i>12</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a><a href="#">
+                            <div class="item d-flex align-items-center">
+                                <div class="image"><img src="img/small-thumbnail-3.jpg" alt="..." class="img-fluid"></div>
+                                <div class="title">
+                                    <strong>Alberto Savoia Can Teach You About</strong>
+                                    <div class="d-flex align-items-center">
+                                        <div class="views"><i class="icon-eye"></i> 500</div>
+                                        <div class="comments"><i class="icon-comment"></i>12</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- Widget [Categories Widget]-->
+                <div class="widget categories">
+                    <header>
+                        <h3 class="h6">Categories</h3>
+                    </header>
+                    <div class="item d-flex justify-content-between"><a href="#">Growth</a><span>12</span></div>
+                </div>
+                <!-- Widget [Tags Cloud Widget]-->
+                <div class="widget tags">
+                    <header>
+                        <h3 class="h6">Tags</h3>
+                    </header>
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="#" class="tag">#Business</a></li>
+                        <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
+                        <li class="list-inline-item"><a href="#" class="tag">#Fashion</a></li>
+                        <li class="list-inline-item"><a href="#" class="tag">#Sports</a></li>
+                        <li class="list-inline-item"><a href="#" class="tag">#Economy</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!--<div>
     <h4>CategoryPost</h4>
     <hr />
 
@@ -73,20 +276,16 @@
 </div>
 
 <!-- Comment section starts here-->
-@if (User.Identity.IsAuthenticated)
+<!--@if (User.Identity.IsAuthenticated)
  {
     <div class="row">
         <div class="col-8 offset-2">
             <form asp-controller="PostComments" asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="CategoryPostId" value="@Model.Id" />
-                <input type="hidden" asp-for="Slug" />
+                <input type="hidden" asp-for="Slug" />-->
 
-                @*<div class="form-group">
-                        <label asp-for="BlogUserId" class="control-label"></label>
-                        <select asp-for="BlogUserId" class="form-control" asp-items="ViewBag.BlogUserId"></select>
-                    </div>*@
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="control-label">Comment</label>
                     <textarea name="CommentBody" class="form-control"></textarea>
 
@@ -105,9 +304,9 @@ else
     {
         <h2>Login or Register to post a Comment</h2>
         <hr />
-    }
+    }-->
 
-@*Where my comments will be posted*@
+Where my comments will be posted
 
 <div class="row">
     <h2>Comment Section:</h2>
@@ -135,4 +334,4 @@ else
 
 </div>
 
-}
+}-->*@

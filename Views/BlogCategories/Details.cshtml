@@ -1,7 +1,11 @@
-﻿@model MyBlog.Models.BlogCategory
+﻿@using MyBlog.Services
+@using MyBlog.Models
+
+@inject IImageService imageService
+@model BlogCategory
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Details";          
 }
 
 <h1>Details</h1>
@@ -9,29 +13,31 @@
 <div>
     <h4>BlogCategory</h4>
     <hr />
+    <img src="@imageService.DecodeFile(Model.ImageData, Model.ContentType)" class="img-fluid" />
+
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd class="col-sm-10">
             @Html.Raw(Model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Created)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Created)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Updated)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Updated)
         </dd>
     </dl>

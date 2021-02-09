@@ -1,4 +1,8 @@
-﻿@model IEnumerable<MyBlog.Models.BlogCategory>
+﻿@model IEnumerable<BlogCategory>
+@using MyBlog.Services
+@using MyBlog.Models
+
+@inject IImageService imageService
 
 @{
     ViewData["Title"] = "Index";
@@ -12,6 +16,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -28,28 +35,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.Description)*@
-                @Html.Raw(item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">Posts</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" class="img-thumbnail" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Description)*@
+                    @Html.Raw(item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">Posts</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

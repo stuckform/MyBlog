@@ -1,4 +1,9 @@
-﻿@model MyBlog.Models.BlogCategory
+﻿@using MyBlog.Services
+@using MyBlog.Models
+
+@inject IImageService imageService
+@model BlogCategory
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,13 +15,19 @@
 <hr />
 <div class="row">
     <div class="col">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*two ways to add a hidden model property from view*@
             @Html.HiddenFor(model => model.Created)
+            <input type="hidden" asp-for="ImageData" />
+            <input type="hidden" asp-for="ContentType" />
+
             @*<input type="hidden" asp-for="Created" />*@
             <input type="hidden" asp-for="Id" />
+            <img src="@imageService.DecodeFile(Model.ImageData, Model.ContentType)" class="img-fluid" />
+            <label asp-for="ImageData" class="control-label"></label>
+            <input name="formFile" type="file" class="form-control" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
