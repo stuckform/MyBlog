@@ -1,4 +1,8 @@
-﻿@model MyBlog.Models.CategoryPost
+﻿@using MyBlog.Services
+@using MyBlog.Models
+
+@model CategoryPost
+@inject IImageService imageService
 
 @{
     ViewData["Title"] = "Edit";
@@ -22,7 +26,9 @@
                 <select asp-for="BlogCategoryId" class="form-control" asp-items="ViewBag.BlogCategoryId"></select>
                 <span asp-validation-for="BlogCategoryId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
+            <img src="@imageService.DecodeFile(Model.ImageData, Model.ContentType)" class="img-fluid" />
                 <label asp-for="ImageData" class="control-label"></label>
                 <input name="formFile" type="file" class="form-control" />
             </div>

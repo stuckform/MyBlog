@@ -21,7 +21,7 @@ namespace MyBlog
            //ManageData - the name of a method inside that class that does some unit of work
            // All ManageData is going to do is call a few other methods (wrapper method)
             
-           await DataManager.ManageDataAsync(host);
+           await DataUtility.ManageDataAsync(host);
 
            host.Run();
         }    

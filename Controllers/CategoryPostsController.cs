@@ -35,17 +35,73 @@ namespace MyBlog.Controllers
         public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
             ViewData["SearchString"] = searchString;
-//I want to look at the incoming pageNumber variable and either use it or force it to be 1 and then use 1
-            pageNumber ??= 1;
+            //I want to look at the incoming pageNumber variable and either use it or force it to be 1 and then use 1
+            pageNumber = pageNumber == null || pageNumber <= 0 ? 1 : pageNumber;
+            ViewData["PageNumber"] = pageNumber;
 
             //Define an arbitrary page size
-            var pageSize = 3;
+            int pageSize = 3, ttlRecords = 0, ttlPages = 0;
+
+            IQueryable<CategoryPost> result = null;
+            if(!string.IsNullOrEmpty(searchString))
+            {
+                result = _context.CategoryPost.AsQueryable();
+                searchString = searchString.ToLower();
+
+                result = result.Where(p => p.Title.ToLower().Contains(searchString) ||
+                                      p.PostBody.ToLower().Contains(searchString) ||
+                                      p.Abstract.ToLower().Contains(searchString) ||
+                                      p.PostComments.Any(c => c.CommentBody.ToLower().Contains(searchString) ||
+                                                         c.BlogUser.FirstName.ToLower().Contains(searchString) ||
+                                                         c.BlogUser.LastName.ToLower().Contains(searchString) ||
+                                                         c.BlogUser.DisplayName.ToLower().Contains(searchString) ||
+                                                         c.BlogUser.Email.ToLower().Contains(searchString)));
+
+                //Once this LINQ query executes I can ask how many records there are and then I can determine how many
+                //pages there are
+                ttlRecords = (await result.ToListAsync()).Count;
+            }
+            else
+            {
+                result = _context.CategoryPost.AsQueryable();
+                ttlRecords = (await result.ToListAsync()).Count;
+            }
+
+            if(ttlRecords == 0)
+            {
+                ttlPages = ttlRecords;
+            }
+            else if((ttlRecords % pageSize) > 0)
+            {
+                ttlPages = Convert.ToInt32(ttlRecords / pageSize) + 1;
+            }
+            else
+            {
+                ttlPages = Convert.ToInt32(ttlRecords / pageSize);
+            }
+
+            ViewData["TtlPages"] = ttlPages;
+
+            pageNumber = pageNumber > ttlPages ? ttlPages : pageNumber;
+
+            if(ttlPages > 0)
+            {
+                ViewData["PageXofY"] = $"Page {pageNumber} of {ttlPages}";
+            }
+            else
+            {
+                ViewData["PageXofY"] = $"Your search string yielded no results";
+            }
+
+            var skipCount = ((int)pageNumber - 1) * pageSize;
 
             //Define a sentence telling the User what page their on
             //ViewData["Page"] = $"You are viewing page [pageNumber} of {}"
-
-            var applicationDbContext = _context.CategoryPost.Include(c => c.BlogCategory);
-            return View(await applicationDbContext.ToListAsync());
+            var posts = (await result.OrderByDescending(p => p.Created).ToListAsync()).Skip(skipCount).Take(pageSize);
+            return View(posts);
+            //var applicationDbContext = _context.CategoryPost.Include(c => c.BlogCategory);
+           
+            //return View(await applicationDbContext.ToListAsync());
         }
         //Just show the blog posts for a given category.
         public IActionResult CategoryIndex(int? id)
@@ -170,7 +226,7 @@ namespace MyBlog.Controllers
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady,Created, Slug")] CategoryPost categoryPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady,Created, Slug, ImageData, ContentType")] CategoryPost categoryPost, IFormFile formFile)
         {
             if (id != categoryPost.Id)
             {
@@ -181,6 +237,12 @@ namespace MyBlog.Controllers
             {
                 try
                 {
+                    if(formFile != null)
+                    {
+                        categoryPost.ContentType = _imageService.RecordContentType(formFile);
+                        categoryPost.ImageData = await _imageService.EncodeFileAsync(formFile);
+                    }
+
                     var slug = _slugService.URLFriendly(categoryPost.Title);
                     if (slug != categoryPost.Slug)
                     {

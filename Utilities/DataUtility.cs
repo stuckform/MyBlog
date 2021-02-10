@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyBlog.Data;
 using MyBlog.Models;
+using Npgsql;
 
 namespace MyBlog.Utilities
 {
@@ -14,9 +17,41 @@ namespace MyBlog.Utilities
     //I would need the following code somewhere in my application
 
 
-    public static class DataManager
+    public static class DataUtility
     {
-      public static async Task ManageDataAsync(IHost host)
+        public static string GetConnectionString(IConfiguration configuration) 
+        {
+            //The default connection string will come from appSettings like usual
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            //It will be automatically overwritten if we are running on Heroku
+            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
+        }
+
+        private static string BuildConnectionString(string databaseUrl)
+        {
+            //Provides an object representation of a uniform resource identifier (URI) and easy access to the parts of the URI
+            var databaseUri = new Uri(databaseUrl);
+            var userInfo = databaseUri.UserInfo.Split(':');
+
+            //Provides a simple way to create and manage the contents of connection strings used by the NpgsqlConnection class.
+            var builder = new NpgsqlConnectionStringBuilder
+            {
+                Host = databaseUri.Host,
+                Port = databaseUri.Port,
+                Username = userInfo[0],
+                Password = userInfo[1],
+                Database = databaseUri.LocalPath.TrimStart('/'),
+                SslMode = SslMode.Prefer,
+                TrustServerCertificate = true
+            };
+
+            return builder.ToString();
+
+        }
+       
+        public static async Task ManageDataAsync(IHost host)
         {
             //This Technique is used to obtain refrences to services that get registered in the
             //ConfigureServices method in the startup class
@@ -32,6 +67,9 @@ namespace MyBlog.Utilities
 
             //Service 3: an instance of UserManager
             var userManagerSvc = svcProvider.GetRequiredService<UserManager<BlogUser>>();
+            
+            //This is the programmict equivalent to Update-Database       
+            await dbContextSvc.Database.MigrateAsync();
 
             //step 1: Add a few Roles into the system (administrator & moderator)
             await SeedRolesAsync(roleManagerSvc);
