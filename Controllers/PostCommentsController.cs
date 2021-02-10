@@ -102,7 +102,7 @@ namespace MyBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
             }
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", postComment.BlogUserId);
             ViewData["CategoryPostId"] = new SelectList(_context.CategoryPost, "Id", "Id", postComment.CategoryPostId);
