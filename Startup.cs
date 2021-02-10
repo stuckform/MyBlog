@@ -59,8 +59,8 @@ namespace MyBlog
             services.AddAuthentication()
             .AddGitHub(options =>
             {
-                options.ClientId = "d40086f78e6512dbc5a7";
-                options.ClientSecret = "c5caf4d0161b79a1c1d279f445e355d3cf6a214f";
+                options.ClientId = "a651803fe5065b67ac6a";
+                options.ClientSecret = "bf6d8828e797756a6c7dae9e4020456923735f6a";
                 options.AccessDeniedPath = "/AccessDeniedPathInfo";
             })
       
