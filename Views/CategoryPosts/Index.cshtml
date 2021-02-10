@@ -28,7 +28,7 @@
                         @foreach (var item in Model)
                         {
                             <div class="post col-xl-6">
-                                <div class="post-thumbnail"><a asp-action="Details" asp-route-slug="@item.Slug"><img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" alt="..." class="img-fluid"></a></div>
+                                <div class="post-thumbnail"><a asp-action="Details" asp-route-slug="@item.Slug"></Img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" alt="..." class="/Img-fluid"></a></div>
                                 <div class="post-details">
                                     <div class="post-meta d-flex justify-content-between">
                                         <div class="date meta-last">@item.Created.ToString("MMM.dd.yyyy")</div>
