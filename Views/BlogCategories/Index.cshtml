@@ -8,59 +8,164 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<!DOCTYPE html>
+<html>
+<body>
+    @if (User.IsInRole("Administrator"))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
+    <div class="container">
+        <div class="row">
+            <!-- Latest Posts -->
+            <main class="posts-listing col-lg-8">
+                <div class="container">
+                    <div class="row">
+                        <!-- post -->
+                        @foreach (var item in Model)
+                        {
+                            <div class="post col-xl-6">
+                                <div class="post-thumbnail">
+                                    <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">
+                                        <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" alt="..." class="img-fluid">
+                                    </a>
+                                </div>
+                                <div class="post-details">
+                                    <div class="post-meta d-flex justify-content-between">
+                                        <div class="date meta-last">
+                                            @item.Created.ToString("MMM.dd.yyyy")
+                                        </div>
+                                    
+                                    </div><a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">
+                                        <h3 class="h4">@Html.DisplayName(item.Name)</h3>
+                                    </a>
+                                    <p class="text-muted">
+                                        @Html.Raw(item.Description)
+                                    </p>
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <p>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>  <a asp-action="Delete" asp-route-id="@item.Id">Delete </a>
+                                        </p>
 
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+
+                                    }
+                                   
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+            </main>
+            <aside class="col-lg-4">
+                <div class="widget latest-posts">
+                    <header>
+                        <h3 class="h6">Latest Posts</h3>
+                    </header>
+                    <div class="blog-posts">
+                        <a href="#">
+                            <div class="item d-flex align-items-center">
+                                <div class="image"><img src="img/small-thumbnail-1.jpg" alt="..." class="img-fluid"></div>
+                                <div class="title">
+                                    <strong>Alberto Savoia Can Teach You About</strong>
+                                    <div class="d-flex align-items-center">
+                                        <div class="views"><i class="icon-eye"></i> 500</div>
+                                        <div class="comments"><i class="icon-comment"></i>12</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+                    <!-- Widget [Tags Cloud Widget]-->
+                    <div class="widget tags">
+                        <header>
+                            <h3 class="h6">Tags</h3>
+                        </header>
+                        <ul class="list-inline">
+                            <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
+                        </ul>
+                    </div>
+                
+            </aside>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" class="img-thumbnail" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.Description)*@
-                    @Html.Raw(item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                    <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">Posts</a>
-                </td>
+                <th>
+
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" class="img-thumbnail" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+
+                        @Html.Raw(item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Updated)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                        <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">Posts</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@

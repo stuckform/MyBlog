@@ -36,30 +36,48 @@
                                 </div>
                                 <div class="post-details">
                                     <div class="post-meta d-flex justify-content-between">
-                                        <div class="date meta-last">@item.Created.ToString("MMM.dd.yyyy")</div>
+                                        <div class="date meta-last">
+                                            @item.Created.ToString("MMM.dd.yyyy")
+                                        </div>
                                         <div class="category">
-                                            <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.BlogCategory.Name)</a>
+                                            <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">
+                                                @Html.DisplayFor(modelItem => item.BlogCategory.Name)
+                                            </a>
                                         </div>
                                     </div><a asp-action="Details" asp-route-slug="@item.Slug">
                                         <h3 class="h4">@Html.DisplayName(item.Title)</h3>
                                     </a>
-                                    <p class="text-muted">@Html.Raw(item.Abstract)</p>
-                                    <footer class="post-footer d-flex align-items-center">
-                                        <a href="#" class="author d-flex align-items-center flex-wrap">
-                                            <div class="avatar"><img src="~/Img/mecircle.png" alt="..." class="img-fluid"></div>
-                                            <div class="title"><span>Matthew Coppinger</span></div>
-                                        </a>
-                                        <div class="date">
-                                            <i class="icon-clock"></i>
-                                            @{
-                                                var currentTime = DateTime.Now;
-                                                var timeSpan = currentTime - item.Created;
-                                                var elapsedTime = timeSpan.Days;
-                                            }
-                                            @elapsedTime days ago
-                                        </div>
-                                        <div class="comments meta-last"><i class="icon-comment"></i>@item.PostComments.Count()</div>
-                                    </footer>
+                                    <p class="text-muted">
+                                        @Html.Raw(item.Abstract)
+                                    </p>
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <p>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>  <a asp-action="Delete" asp-route-id="@item.Id">Delete </a>
+                                        </p> 
+                                                                                              
+                                        
+                                    }
+                                        <footer class="post-footer d-flex align-items-center">
+                                            <a href="#" class="author d-flex align-items-center flex-wrap">
+                                                <div class="avatar">
+                                                    <img src="~/Img/mecircle.png" alt="..." class="img-fluid">
+                                                </div>
+                                                <div class="title">
+                                                    <span>Matthew Coppinger</span>
+                                                </div>
+                                            </a>
+                                            <div class="date">
+                                                <i class="icon-clock"></i>
+                                                @{
+                                                    var currentTime = DateTime.Now;
+                                                    var timeSpan = currentTime - item.Created;
+                                                    var elapsedTime = timeSpan.Days;
+                                                }
+                                                @elapsedTime days ago
+                                            </div>
+                                            <div class="comments meta-last"><i class="icon-comment"></i>@item.PostComments.Count()</div>
+                                        </footer>
                                 </div>
                             </div>
                         }
