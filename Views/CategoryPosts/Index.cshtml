@@ -12,12 +12,13 @@
 <!DOCTYPE html>
 <html>
 <body>
-            @if (User.IsInRole("Administrator"))
-            {
-                <p>
-                    <a asp-action="Create">Create New</a>
-                </p>
-            }
+    @if (User.IsInRole("Administrator"))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+
     <div class="container">
         <div class="row">
             <!-- Latest Posts -->
@@ -28,9 +29,11 @@
                         @foreach (var item in Model)
                         {
                             <div class="post col-xl-6">
-                                <div class="post-thumbnail"><a asp-action="Details" asp-route-slug="@item.Slug">
-                                    <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" alt="..." class="/Img-fluid">
-                                     </a></div>
+                                <div class="post-thumbnail">
+                                    <a asp-action="Details" asp-route-slug="@item.Slug">
+                                        <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" alt="..." class="img-fluid">
+                                    </a>
+                                </div>
                                 <div class="post-details">
                                     <div class="post-meta d-flex justify-content-between">
                                         <div class="date meta-last">@item.Created.ToString("MMM.dd.yyyy")</div>
@@ -60,33 +63,58 @@
                                 </div>
                             </div>
                         }
-                       
+
                     </div>
                     <!-- Pagination -->
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination pagination-template d-flex justify-content-center">
-                            <li class="page-item">< class="page-link"> <i class="fa fa-angle-left"></i></></li>
-                            <li class="page-item"><a href="#" class="page-link active">1</a></li>
-                            <li class="page-item"><a href="#" class="page-link">2</a></li>
-                            <li class="page-item"><a href="#" class="page-link">3</a></li>
-                            <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
-                        </ul>
-                    </nav>
+                    <form class="d-flex justify-content-center" asp-action="Index" method="get">
+                        <input type="hidden" name="pageNumber" value="@ViewBag.SearchString" />
+
+                        <button type="submit" name="pageNumber" value="@(ViewBag.PageNumber-1)" class="page-link">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+
+                        @for (var loop = 1; loop <= ViewBag.TtlPages; loop++)
+                        {
+                            var myClass = "page-link";
+                            if (loop == (int)ViewBag.PageNUmber)
+                            {
+                                myClass = "page-link active";
+                            }
+                            <button class="@myClass" type="submit" name="pageNumber" value="@loop">@loop</button>
+                        }
+                        <button type="submit" name="pageNumber" value="@(ViewBag.PageNumber+1)" class="page-link">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                    </form>
+        
+                    <p class="d-flex justify-content-center mt-3" >
+                        @ViewBag.PageXofY
+                    </p>
+
+                    @*<nav aria-label="Page navigation example">
+            <ul class="pagination pagination-template d-flex justify-content-center">
+                <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
+                <li class="page-item"><a href="#" class="page-link active">1</a></li>
+                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                <li class="page-item"><a href="#" class="page-link">3</a></li>
+                <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
+            </ul>
+        </nav>*@
                 </div>
             </main>
             <aside class="col-lg-4">
                 <!-- Widget [Search Bar Widget]-->
-                <div class="widget search">
-                    <header>
-                        <h3 class="h6">Search the blog</h3>
-                    </header>
-                    <form asp-action="Index" method="get" class="search-form">
-                        <div class="form-group">
-                            <input type="search" placeholder="What are you looking for?">
-                            <button type="submit" class="submit"><i class="icon-search"></i></button>
-                        </div>
-                    </form>
-                </div>
+                @*<div class="widget search">
+                <header>
+                    <h3 class="h6">Search the blog</h3>
+                </header>
+                <form asp-action="Index" method="get" class="search-form">
+                    <div class="form-group">
+                        <input type="search" placeholder="What are you looking for?">
+                        <button type="submit" class="submit"><i class="icon-search"></i></button>
+                    </div>
+                </form>
+            </div>*@
                 <!-- Widget [Latest Posts Widget]        -->
                 <div class="widget latest-posts">
                     <header>
@@ -105,26 +133,26 @@
                                 </div>
                             </div>
                         </a>
-                     </div>
-                            <!-- Widget [Categories Widget]-->
-                            <div class="widget categories">
-                                <header>
-                                    <h3 class="h6">Categories</h3>
-                                </header>
-                                <div class="item d-flex justify-content-between">
-                                    <a href="#">Growth</a><span>12</span>
-                                </div>
+                    </div>
+                    <!-- Widget [Categories Widget]-->
+                    <div class="widget categories">
+                        <header>
+                            <h3 class="h6">Categories</h3>
+                        </header>
+                        <div class="item d-flex justify-content-between">
+                            <a href="#">Growth</a><span>12</span>
+                        </div>
 
-                            </div>
-                            <!-- Widget [Tags Cloud Widget]-->
-                            <div class="widget tags">
-                                <header>
-                                    <h3 class="h6">Tags</h3>
-                                </header>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
-                                </ul>
-                            </div>
+                    </div>
+                    <!-- Widget [Tags Cloud Widget]-->
+                    <div class="widget tags">
+                        <header>
+                            <h3 class="h6">Tags</h3>
+                        </header>
+                        <ul class="list-inline">
+                            <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
+                        </ul>
+                    </div>
                 </div>
             </aside>
         </div>
