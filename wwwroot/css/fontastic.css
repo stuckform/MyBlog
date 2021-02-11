@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "blog";
-  src:url("~/Fonts/blog.eot");
-  src:url("~/Fonts/blog.eot?#iefix") format("embedded-opentype"),
-    url("~/Fonts/blog.woff") format("woff"),
-    url("~/Fonts/blog.ttf") format("truetype"),
-    url("~/Fonts/blog.svg#blog") format("svg");
+  src:url("/Fonts/blog.eot");
+  src:url("/Fonts/blog.eot?#iefix") format("embedded-opentype"),
+    url("/Fonts/blog.woff") format("woff"),
+    url("/Fonts/blog.ttf") format("truetype"),
+    url("/Fonts/blog.svg#blog") format("svg");
   font-weight: normal;
   font-style: normal;
 
