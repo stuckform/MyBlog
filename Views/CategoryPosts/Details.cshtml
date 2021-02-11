@@ -105,11 +105,6 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <button type="submit" value="Post" class="btn btn-secondary">Submit Comment</button>
-                                                    @if (User.IsInRole("Administrator, Moderator"))
-                                                    {
-                                                        <a asp-controller="PostComment" asp-action="Edit"> Edit </a>
-                                                        <a asp-controller="PostComment" asp-action="Delete"> Delete </a>
-                                                    }
                                                 </div>
                                             </div>
                                         </form>
