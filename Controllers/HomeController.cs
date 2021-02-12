@@ -40,6 +40,7 @@ namespace MyBlog.Controllers
         {
             ViewData["HeaderImage"] = "/Img/lukas-hellebrand-unsplash.jpg";
             ViewData["HeaderText"] = "Welcome to Code Cache";
+            ViewBag.Post = await _context.CategoryPost.ToListAsync();
             var categories = await _context.BlogCategory.ToListAsync();
             return View(categories);
         }

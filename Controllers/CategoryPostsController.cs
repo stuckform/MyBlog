@@ -37,6 +37,8 @@ namespace MyBlog.Controllers
             ViewData["HeaderImage"] = "/Img/photobg.jpg";
             ViewData["HeaderText"] = "Blog Posts";
             ViewData["SearchString"] = searchString;
+            ViewBag.Category = await _context.BlogCategory.ToListAsync();
+
             //I want to look at the incoming pageNumber variable and either use it or force it to be 1 and then use 1
             pageNumber = pageNumber == null || pageNumber <= 0 ? 1 : pageNumber;
             ViewData["PageNumber"] = pageNumber;
@@ -110,7 +112,7 @@ namespace MyBlog.Controllers
         {
             ViewData["HeaderImage"] = "/Img/photobg.jpg";
             ViewData["HeaderText"] = "Blog Posts";
-
+            ViewBag.Category = _context.BlogCategory.ToList();
             if (id == null)
             {
                 return NotFound();
@@ -128,6 +130,7 @@ namespace MyBlog.Controllers
         {
             ViewData["HeaderImage"] = "/Img/photobg.jpg";
             ViewData["HeaderText"] = "Blog Posts";
+            ViewBag.Category = await _context.BlogCategory.ToListAsync();
 
             if (string.IsNullOrEmpty(slug))
             {

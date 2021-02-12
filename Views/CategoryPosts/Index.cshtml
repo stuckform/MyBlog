@@ -28,6 +28,8 @@
                         <!-- post -->
                         @foreach (var item in Model)
                         {
+                            if (item.IsReady == true)
+                            {
                             <div class="post col-xl-6">
                                 <div class="post-thumbnail">
                                     <a asp-action="Details" asp-route-slug="@item.Slug">
@@ -55,8 +57,8 @@
                                         <p>
                                             <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>  <a asp-action="Delete" asp-route-id="@item.Id">Delete </a>
                                         </p> 
-                                                                                              
-                                        
+
+
                                     }
                                         <footer class="post-footer d-flex align-items-center">
                                             <a href="#" class="author d-flex align-items-center flex-wrap">
@@ -80,7 +82,8 @@
                                         </footer>
                                 </div>
                             </div>
-                        }
+                                                        }
+                                                    }
 
                     </div>
                     <!-- Pagination -->
@@ -118,11 +121,11 @@
                 <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
             </ul>
         </nav>*@
-                </div>
+                <!--</div>
             </main>
             <aside class="col-lg-4">
-                <!-- Widget [Search Bar Widget]-->
-                @*<div class="widget search">
+                <!-- Widget [Search Bar Widget]-->-->
+                <!--@*<div class="widget search">
                 <header>
                     <h3 class="h6">Search the blog</h3>
                 </header>
@@ -132,9 +135,9 @@
                         <button type="submit" class="submit"><i class="icon-search"></i></button>
                     </div>
                 </form>
-            </div>*@
-                <!-- Widget [Latest Posts Widget]        -->
-                <div class="widget latest-posts">
+            </div>*@-->
+                <!--<!-- Widget [Latest Posts Widget]        -->-->
+                <!--@*<div class="widget latest-posts">
                     <header>
                         <h3 class="h6">Latest Posts</h3>
                     </header>
@@ -151,28 +154,32 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
-                    <!-- Widget [Categories Widget]-->
-                    <div class="widget categories">
+                    </div>*@-->
+                    <!--<!-- Widget [Categories Widget]-->-->
+                    <!--@*<div class="widget categories">
                         <header>
                             <h3 class="h6">Categories</h3>
                         </header>
+                        @foreach(var cat in ViewBag.Category)
+                        {
                         <div class="item d-flex justify-content-between">
-                            <a href="#">Growth</a><span>12</span>
+                            <a asp-action="CategoryIndex" asp-route="@cat.Id">@cat.Name</a><span>@cat.count()</span>
                         </div>
 
-                    </div>
+                        }*@
+
+                    </div>-->
                     <!-- Widget [Tags Cloud Widget]-->
-                    <div class="widget tags">
+                    <!--<div class="widget tags">
                         <header>
                             <h3 class="h6">Tags</h3>
                         </header>
                         <ul class="list-inline">
                             <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
                         </ul>
-                    </div>
-                </div>
-            </aside>
+                    </div>-->
+                <!--</div>
+            </aside>-->
         </div>
     </div>
 </body>

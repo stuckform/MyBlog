@@ -99,51 +99,32 @@
         </div>
     </section>
     <!-- Latest Posts -->
-    <section class="latest-posts">
+    @*<section class="latest-posts">
         <div class="container">
             <header>
                 <h2>Latest from the blog</h2>
-                <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
             </header>
+                @foreach(var post in ViewBag.post)
+                {
+
+
             <div class="row">
                 <div class="post col-md-4">
-                    <div class="post-thumbnail"><a href="post.html"><img src="/Img/blog-1.jpg" alt="..." class="img-fluid"></a></div>
+                    <div class="post-thumbnail"><a asp-controller="Post" asp-action="Details" asp-route-id="@post.Slug"><img src="@imageService.DecodeFile(post.ImageData, post.ContentType)" alt="..." class="img-fluid"></a></div>
                     <div class="post-details">
                         <div class="post-meta d-flex justify-content-between">
-                            <div class="date">20 May | 2016</div>
-                            <div class="category"><a href="#">Business</a></div>
+                            <div class="date">@post.Created</div>
+                            <div class="category"><a href="#">@post.BlogCategory.Name</a></div>
                         </div><a href="post.html">
-                            <h3 class="h4">Ways to remember your important ideas</h3>
+                            <h3 class="h4">@post.Title</h3>
                         </a>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                        <p class="text-muted">@post.Abstract</p>
                     </div>
                 </div>
-                <div class="post col-md-4">
-                    <div class="post-thumbnail"><a href="post.html"><img src="/Img/blog-2.jpg" alt="..." class="img-fluid"></a></div>
-                    <div class="post-details">
-                        <div class="post-meta d-flex justify-content-between">
-                            <div class="date">20 May | 2016</div>
-                            <div class="category"><a href="#">Technology</a></div>
-                        </div><a href="post.html">
-                            <h3 class="h4">Diversity in Engineering: Effect on Questions</h3>
-                        </a>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                    </div>
-                </div>
-                <div class="post col-md-4">
-                    <div class="post-thumbnail"><a href="post.html"><img src="/Img/blog-3.jpg" alt="..." class="img-fluid"></a></div>
-                    <div class="post-details">
-                        <div class="post-meta d-flex justify-content-between">
-                            <div class="date">20 May | 2016</div>
-                            <div class="category"><a href="#">Financial</a></div>
-                        </div><a href="post.html">
-                            <h3 class="h4">Alberto Savoia Can Teach You About Interior</h3>
-                        </a>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                    </div>
-                </div>
+                
             </div>
+                }
         </div>
-    </section>
+    </section>*@
 </body>
 </html>
