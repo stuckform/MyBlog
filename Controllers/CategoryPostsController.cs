@@ -44,7 +44,7 @@ namespace MyBlog.Controllers
             ViewData["PageNumber"] = pageNumber;
 
             //Define an arbitrary page size
-            int pageSize = 3, ttlRecords = 0, ttlPages = 0;
+            int pageSize = 4, ttlRecords = 0, ttlPages = 0;
 
             IQueryable<CategoryPost> result = null;
             if(!string.IsNullOrEmpty(searchString))
@@ -94,7 +94,7 @@ namespace MyBlog.Controllers
             }
             else
             {
-                ViewData["PageXofY"] = $"Your search string yielded no results";
+                ViewData["PageXofY"] = $"Your search yielded no results";
             }
 
             var skipCount = ((int)pageNumber - 1) * pageSize;
