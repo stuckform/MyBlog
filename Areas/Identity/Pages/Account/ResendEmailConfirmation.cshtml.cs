@@ -42,6 +42,9 @@ namespace MyBlog.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["HeaderImage"] = "/Img/nemuel-sereti-unsplash.jpg";
+            ViewData["HeaderText"] = "E-mail Confirmation";
+
             if (!ModelState.IsValid)
             {
                 return Page();

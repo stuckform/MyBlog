@@ -38,12 +38,16 @@ namespace MyBlog.Controllers
 
         public  async Task<IActionResult> Index()
         {
+            ViewData["HeaderImage"] = "/Img/lukas-hellebrand-unsplash.jpg";
+            ViewData["HeaderText"] = "Welcome to Code Cache";
             var categories = await _context.BlogCategory.ToListAsync();
             return View(categories);
         }
 
         public IActionResult Contact()
         {
+            ViewData["HeaderImage"] = "/Img/nhu-nguyen-unsplash.jpg";
+            ViewData["HeaderText"] = "Contact Me";
             return View();
         }
 
@@ -51,6 +55,7 @@ namespace MyBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact(ContactForm contactForm)
         {
+
             await _emailSender.SendEmailAsync(_mailSettings.Mail, $"{contactForm.Subject} from {contactForm.FirstName} at {contactForm.Email}", contactForm.Body);
 
             return RedirectToAction("contact");

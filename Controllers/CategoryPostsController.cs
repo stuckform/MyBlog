@@ -34,6 +34,8 @@ namespace MyBlog.Controllers
         // GET: CategoryPosts
         public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
+            ViewData["HeaderImage"] = "/Img/photobg.jpg";
+            ViewData["HeaderText"] = "Blog Posts";
             ViewData["SearchString"] = searchString;
             //I want to look at the incoming pageNumber variable and either use it or force it to be 1 and then use 1
             pageNumber = pageNumber == null || pageNumber <= 0 ? 1 : pageNumber;
@@ -105,8 +107,11 @@ namespace MyBlog.Controllers
         }
         //Just show the blog posts for a given category.
         public IActionResult CategoryIndex(int? id)
-        { 
-            if(id == null)
+        {
+            ViewData["HeaderImage"] = "/Img/photobg.jpg";
+            ViewData["HeaderText"] = "Blog Posts";
+
+            if (id == null)
             {
                 return NotFound();
             }
@@ -121,11 +126,15 @@ namespace MyBlog.Controllers
 
         public async Task<IActionResult> Details(string slug)
         {
+            ViewData["HeaderImage"] = "/Img/photobg.jpg";
+            ViewData["HeaderText"] = "Blog Posts";
+
             if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
+            ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name");
 
 
             var categoryPost = await _context.CategoryPost
@@ -164,6 +173,9 @@ namespace MyBlog.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
+            ViewData["HeaderImage"] = "/Img/photobg.jpg";
+            ViewData["HeaderText"] = "Blog Posts";
+
             ViewData["BlogCategoryId"] = new SelectList(_context.BlogCategory, "Id", "Name");
             return View();
         }
@@ -175,6 +187,7 @@ namespace MyBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,BlogCategoryId,Title,Abstract,PostBody,IsReady")] CategoryPost categoryPost, IFormFile formFile)
         {
+
             if (ModelState.IsValid)
             {
                 categoryPost.Created = DateTime.Now;
@@ -206,6 +219,9 @@ namespace MyBlog.Controllers
         // GET: CategoryPosts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["HeaderImage"] = "/Img/photobg.jpg";
+            ViewData["HeaderText"] = "Blog Posts";
+
             if (id == null)
             {
                 return NotFound();
@@ -283,6 +299,9 @@ namespace MyBlog.Controllers
         // GET: CategoryPosts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["HeaderImage"] = "/Img/photobg.jpg";
+            ViewData["HeaderText"] = "Blog Posts";
+
             if (id == null)
             {
                 return NotFound();

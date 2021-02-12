@@ -157,7 +157,7 @@
 
 //         < div class= "col" >
 
-//              < a asp - controller = "PostComments" asp - action = "Edit" > Edit </ a >
+//              <a asp-controller="PostComments" asp-action= "Edit" > Edit </a>
 
 //               </ div >
 

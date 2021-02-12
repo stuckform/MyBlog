@@ -47,6 +47,9 @@ namespace MyBlog.Areas.Identity.Pages.Account
 
         public IActionResult OnGet(string code = null)
         {
+            ViewData["HeaderImage"] = "/Img/nemuel-sereti-unsplash.jpg";
+            ViewData["HeaderText"] = "Reset Password";
+
             if (code == null)
             {
                 return BadRequest("A code must be supplied for password reset.");

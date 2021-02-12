@@ -30,6 +30,9 @@ namespace MyBlog.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
         {
+            ViewData["HeaderImage"] = "/Img/nemuel-sereti-unsplash.jpg";
+            ViewData["HeaderText"] = "E-mail Confirmation";
+
             if (email == null)
             {
                 return RedirectToPage("/Index");

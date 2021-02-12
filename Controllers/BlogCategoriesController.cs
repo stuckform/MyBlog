@@ -27,6 +27,8 @@ namespace MyBlog.Controllers
         // GET: BlogCategories
         public async Task<IActionResult> Index()
         {
+            ViewData["HeaderImage"] = "/Img/markus-spiske-unsplash.jpg";
+            ViewData["HeaderText"] = "Categories";
             return View(await _context.BlogCategory.ToListAsync());
         }
 
@@ -35,6 +37,8 @@ namespace MyBlog.Controllers
         // GET: BlogCategories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewData["HeaderImage"] = "/Img/markus-spiske-unsplash.jpg";
+            ViewData["HeaderText"] = "Categories";
             if (id == null)
             {
                 return NotFound();
@@ -55,6 +59,8 @@ namespace MyBlog.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
+            ViewData["HeaderImage"] = "/Img/markus-spiske-unsplash.jpg";
+            ViewData["HeaderText"] = "Create";
             return View();
         }
 
@@ -65,6 +71,9 @@ namespace MyBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] BlogCategory blogCategory, IFormFile formFile)
         {
+            ViewData["HeaderImage"] = "/Img/markus-spiske-unsplash.jpg";
+            ViewData["HeaderText"] = "Create";
+
             if (ModelState.IsValid)
             {
                 blogCategory.Created = DateTime.Now;
@@ -80,6 +89,9 @@ namespace MyBlog.Controllers
         // GET: BlogCategories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["HeaderImage"] = "/Img/markus-spiske-unsplash.jpg";
+            ViewData["HeaderText"] = "Edit";
+
             if (id == null)
             {
                 return NotFound();
@@ -102,6 +114,9 @@ namespace MyBlog.Controllers
         {
             if (id != blogCategory.Id)
             {
+                ViewData["HeaderImage"] = "/Img/karma-talukdar--unsplash.jpg";
+                ViewData["HeaderText"] = "Edit";
+
                 return NotFound();
             }
 
@@ -135,6 +150,9 @@ namespace MyBlog.Controllers
         // GET: BlogCategories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["HeaderImage"] = "/Img/karma-talukdar--unsplash.jpg";
+            ViewData["HeaderText"] = "Delete";
+
             if (id == null)
             {
                 return NotFound();
@@ -155,6 +173,8 @@ namespace MyBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ViewData["HeaderImage"] = "/Img/karma-talukdar--unsplash.jpg";
+            ViewData["HeaderText"] = "Delete";
             var blogCategory = await _context.BlogCategory.FindAsync(id);
             _context.BlogCategory.Remove(blogCategory);
             await _context.SaveChangesAsync();

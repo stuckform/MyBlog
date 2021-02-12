@@ -27,6 +27,9 @@ namespace MyBlog.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
+            ViewData["HeaderImage"] = "/Img/nemuel-sereti-unsplash.jpg";
+            ViewData["HeaderText"] = "Welcome to Code Cache";
+
             if (userId == null || code == null)
             {
                 return RedirectToPage("/Index");

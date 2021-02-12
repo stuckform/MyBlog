@@ -17,6 +17,7 @@ using MyBlog.Models;
 
 namespace MyBlog.Areas.Identity.Pages.Account
 {
+
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
@@ -79,6 +80,9 @@ namespace MyBlog.Areas.Identity.Pages.Account
         //HTTP GET
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["HeaderImage"] = "/Img/nemuel-sereti-unsplash.jpg";
+            ViewData["HeaderText"] = "Registration";
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }

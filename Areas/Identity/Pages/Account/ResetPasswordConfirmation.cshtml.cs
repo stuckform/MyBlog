@@ -12,6 +12,8 @@ namespace MyBlog.Areas.Identity.Pages.Account
     {
         public void OnGet()
         {
+            ViewData["HeaderImage"] = "/Img/nemuel-sereti-unsplash.jpg";
+            ViewData["HeaderText"] = "Reset Password";
 
         }
     }

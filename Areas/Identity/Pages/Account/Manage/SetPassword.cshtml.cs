@@ -45,6 +45,9 @@ namespace MyBlog.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
+            ViewData["HeaderImage"] = "/Img/nemuel-sereti-unsplash.jpg";
+            ViewData["HeaderText"] = "Welcome to Code Cache";
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
