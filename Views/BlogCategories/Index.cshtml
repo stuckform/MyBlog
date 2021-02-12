@@ -30,7 +30,7 @@
                             <div class="post col-xl-6">
                                 <div class="post-thumbnail">
                                     <a asp-controller="CategoryPosts" asp-action="CategoryIndex" asp-route-id="@item.Id">
-                                        <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" alt="..." class="img-fluid">
+                                        <img src="@imageService.DecodeFile(item.ImageData, item.ContentType)" alt="..." class="img-thumbnail">
                                     </a>
                                 </div>
                                 <div class="post-details">
