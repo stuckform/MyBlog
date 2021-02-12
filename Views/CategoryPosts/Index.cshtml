@@ -113,19 +113,19 @@
                     </p>
 
                     @*<nav aria-label="Page navigation example">
-            <ul class="pagination pagination-template d-flex justify-content-center">
-                <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
-                <li class="page-item"><a href="#" class="page-link active">1</a></li>
-                <li class="page-item"><a href="#" class="page-link">2</a></li>
-                <li class="page-item"><a href="#" class="page-link">3</a></li>
-                <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
-            </ul>
-        </nav>*@
-                <!--</div>
+                    <ul class="pagination pagination-template d-flex justify-content-center">
+                        <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
+                        <li class="page-item"><a href="#" class="page-link active">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
+                    </ul>
+                        </nav>*@
+                </div>
             </main>
             <aside class="col-lg-4">
-                <!-- Widget [Search Bar Widget]-->-->
-                <!--@*<div class="widget search">
+                <!-- Widget [Search Bar Widget]-->
+                @*<div class="widget search">
                 <header>
                     <h3 class="h6">Search the blog</h3>
                 </header>
@@ -135,9 +135,9 @@
                         <button type="submit" class="submit"><i class="icon-search"></i></button>
                     </div>
                 </form>
-            </div>*@-->
-                <!--<!-- Widget [Latest Posts Widget]        -->-->
-                <!--@*<div class="widget latest-posts">
+            </div>*@
+                <!-- Widget [Latest Posts Widget]-->
+                <!--<div class="widget latest-posts">
                     <header>
                         <h3 class="h6">Latest Posts</h3>
                     </header>
@@ -154,32 +154,32 @@
                                 </div>
                             </div>
                         </a>
-                    </div>*@-->
-                    <!--<!-- Widget [Categories Widget]-->-->
-                    <!--@*<div class="widget categories">
+                    </div>-->
+                    <!--<!-- Widget [Categories Widget]-->
+                    <!--<div class="widget categories">
                         <header>
                             <h3 class="h6">Categories</h3>
                         </header>
-                        @foreach(var cat in ViewBag.Category)
-                        {
+                       
+                        
                         <div class="item d-flex justify-content-between">
-                            <a asp-action="CategoryIndex" asp-route="@cat.Id">@cat.Name</a><span>@cat.count()</span>
+                            <a href="#"></a><span></span>
                         </div>
 
-                        }*@
+                        
 
-                    </div>-->
-                    <!-- Widget [Tags Cloud Widget]-->
-                    <!--<div class="widget tags">
+                    </div>
+                     Widget [Tags Cloud Widget]
+                    <div class="widget tags">
                         <header>
                             <h3 class="h6">Tags</h3>
                         </header>
                         <ul class="list-inline">
                             <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
                         </ul>
-                    </div>-->
-                <!--</div>
-            </aside>-->
+                    </div>
+                </div>-->
+            </aside>
         </div>
     </div>
 </body>
