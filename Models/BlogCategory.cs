@@ -26,7 +26,7 @@ namespace MyBlog.Models
         public DateTime? Updated { get; set; }
 
         [Display(Name = "Choose Image")]
-        public byte[] ImageData { get; set; }
+        public byte[] ImageData { get; set; }             
         public string ContentType { get; set; }
 
         // as A Blog Category I am likely to have zero or more Category Post instances

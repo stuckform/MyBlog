@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using MyBlog.Data;
 using MyBlog.Models;
 using MyBlog.Services;
@@ -55,6 +56,32 @@ namespace MyBlog
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddScoped<IEmailSender, EmailService>();
 
+            //Api services
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Code Cache Blog",
+                    Version = "v1",
+                    Description = "This is a blog about programming and technology.",
+                    Contact = new OpenApiContact
+                    {
+                        Email = "Coppinger.dev@gmail.com",
+                        Name = "Matthew Coppinger",
+                        Url = new Uri("https://mattcoppinger.netlify.app")
+                    }
+                });
+            });
             //Service for 3rd party authentication
             services.AddAuthentication()
             .AddGitHub(options =>
@@ -94,17 +121,32 @@ namespace MyBlog
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors("DefaultPolicy");
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Cache Blog");
+                c.InjectJavascript("/swagger/swagger.js");
+                c.InjectStylesheet("/swagger/swagger.css");
+                c.DocumentTitle = "Code Cache Blog";
+
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                  name: "slug",
-                 pattern: "Posts/Deatles/{slug}",
+                 pattern: "Posts/URLFriendly/{slug}",
                  defaults: new { controller = "CategoryPosts", action = "Details" });
 
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+
+                endpoints.MapControllers();
             });
         }
     }

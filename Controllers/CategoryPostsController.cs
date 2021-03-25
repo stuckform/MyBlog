@@ -142,9 +142,10 @@ namespace MyBlog.Controllers
 
             var categoryPost = await _context.CategoryPost
                 .Include(c => c.BlogCategory)
-                .Include(c => c.PostComments)
-                .ThenInclude(p => p.BlogUser)
+                .Include(c => c.PostComments).ThenInclude(p => p.BlogUser)
+                .Include(c => c.Tags)
                 .FirstOrDefaultAsync(mbox => mbox.Slug == slug);
+                
             if (categoryPost == null)
             {
                 return NotFound();
